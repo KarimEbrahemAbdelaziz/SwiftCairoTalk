@@ -1,0 +1,11 @@
+import ObjectMapper
+
+{% for type in types.implementing.AutoMappable %}
+extension {{ type.name }}: Mappable {
+    public mutating func mapping(map: Map) {
+        {% for prop in type.storedVariables %}
+        self.{{prop.name}} <- map["{{prop.annotations.JSONKey |default:prop.name}}"]
+        {% endfor %}
+    }
+}
+{% endfor %}
